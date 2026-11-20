@@ -1,0 +1,805 @@
+{
+  "diagnostik": [
+    {
+      "id": "diag-1",
+      "modul": 0,
+      "soal": "7 × 8",
+      "perintah": "Berapa hasilnya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "56"
+      ]
+    },
+    {
+      "id": "diag-2",
+      "modul": 0,
+      "soal": "6 × 9",
+      "perintah": "Berapa hasilnya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "54"
+      ]
+    },
+    {
+      "id": "diag-3",
+      "modul": 0,
+      "soal": "−5 + 8",
+      "perintah": "Berapa hasilnya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "3"
+      ]
+    },
+    {
+      "id": "diag-4",
+      "modul": 0,
+      "soal": "3 − 7",
+      "perintah": "Berapa hasilnya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "-4"
+      ]
+    },
+    {
+      "id": "diag-5",
+      "modul": 0,
+      "soal": "2 × 2 × 2 × 2",
+      "perintah": "Berapa hasilnya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "16"
+      ]
+    }
+  ],
+  "diagnostikUlang": [
+    {
+      "id": "diagu-1",
+      "modul": 0,
+      "soal": "8 × 6",
+      "perintah": "Berapa hasilnya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "48"
+      ]
+    },
+    {
+      "id": "diagu-2",
+      "modul": 0,
+      "soal": "9 × 7",
+      "perintah": "Berapa hasilnya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "63"
+      ]
+    },
+    {
+      "id": "diagu-3",
+      "modul": 0,
+      "soal": "−4 + 9",
+      "perintah": "Berapa hasilnya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "5"
+      ]
+    },
+    {
+      "id": "diagu-4",
+      "modul": 0,
+      "soal": "2 − 6",
+      "perintah": "Berapa hasilnya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "-4"
+      ]
+    },
+    {
+      "id": "diagu-5",
+      "modul": 0,
+      "soal": "3 × 3 × 3",
+      "perintah": "Berapa hasilnya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "27"
+      ]
+    }
+  ],
+  "pretest": [
+    {
+      "id": "pre-1",
+      "modul": 1,
+      "soal": "5^3 × 5^2",
+      "perintah": "Tentukan nilainya.",
+      "bentuk": "nilai",
+      "kunci": [
+        "3125"
+      ]
+    },
+    {
+      "id": "pre-2",
+      "modul": 1,
+      "soal": "m^4 × m^5",
+      "perintah": "Sederhanakan. Tulis dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "m^9"
+      ]
+    },
+    {
+      "id": "pre-3",
+      "modul": 2,
+      "soal": "7^6 ÷ 7^4",
+      "perintah": "Tentukan nilainya.",
+      "bentuk": "nilai",
+      "kunci": [
+        "49"
+      ]
+    },
+    {
+      "id": "pre-4",
+      "modul": 2,
+      "soal": "y^7 ÷ y^4",
+      "perintah": "Sederhanakan. Tulis dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "y^3"
+      ]
+    },
+    {
+      "id": "pre-5",
+      "modul": 3,
+      "soal": "9^0 + 3^-2",
+      "perintah": "Tentukan nilainya (pecahan).",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "10/9"
+      ]
+    },
+    {
+      "id": "pre-6",
+      "modul": 3,
+      "soal": "10^-3",
+      "perintah": "Tulis sebagai pecahan.",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "1/1000"
+      ]
+    },
+    {
+      "id": "pre-7",
+      "modul": 1,
+      "soal": "Kabar menyebar. Awalnya 1 orang tahu. Setiap jam, jumlah orang yang tahu menjadi 3 kali lipat.",
+      "perintah": "Tulis jumlah orang yang tahu setelah 4 jam, dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "3^4"
+      ]
+    }
+  ],
+  "posttest": [
+    {
+      "id": "post-1",
+      "modul": 1,
+      "soal": "4^3 × 4^2",
+      "perintah": "Tentukan nilainya.",
+      "bentuk": "nilai",
+      "kunci": [
+        "1024"
+      ]
+    },
+    {
+      "id": "post-2",
+      "modul": 1,
+      "soal": "p^3 × p^6",
+      "perintah": "Sederhanakan. Tulis dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "p^9"
+      ]
+    },
+    {
+      "id": "post-3",
+      "modul": 2,
+      "soal": "6^5 ÷ 6^3",
+      "perintah": "Tentukan nilainya.",
+      "bentuk": "nilai",
+      "kunci": [
+        "36"
+      ]
+    },
+    {
+      "id": "post-4",
+      "modul": 2,
+      "soal": "z^8 ÷ z^5",
+      "perintah": "Sederhanakan. Tulis dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "z^3"
+      ]
+    },
+    {
+      "id": "post-5",
+      "modul": 3,
+      "soal": "8^0 + 2^-3",
+      "perintah": "Tentukan nilainya (pecahan).",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "9/8"
+      ]
+    },
+    {
+      "id": "post-6",
+      "modul": 3,
+      "soal": "10^-2",
+      "perintah": "Tulis sebagai pecahan.",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "1/100"
+      ]
+    },
+    {
+      "id": "post-7",
+      "modul": 1,
+      "soal": "Satu sel membelah menjadi 2 setiap jam. Awalnya ada 1 sel.",
+      "perintah": "Tulis jumlah sel setelah 5 jam, dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "2^5"
+      ]
+    }
+  ],
+  "modul1": [
+    {
+      "id": "m1-01",
+      "modul": 1,
+      "soal": "2^3 × 2^2",
+      "perintah": "Tulis hasilnya dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "2^5"
+      ],
+      "petunjuk": [
+        "Apakah basis kedua bilangan itu sama?",
+        "Pada perkalian basis sama, hitung ada berapa faktor 2 seluruhnya.",
+        "(2×2×2) × (2×2) = 2 × 2 × 2 × 2 × __. Hitung banyak faktor 2, lalu tulis sebagai pangkat."
+      ],
+      "miskonsepsi": {
+        "64": "M2",
+        "1024": "M4"
+      },
+      "pembahasan": "2^3 × 2^2 = (2×2×2) × (2×2) = 2^5, karena ada 3 + 2 = 5 faktor 2."
+    },
+    {
+      "id": "m1-02",
+      "modul": 1,
+      "soal": "3^4 × 3^1",
+      "perintah": "Tulis hasilnya dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "3^5"
+      ],
+      "petunjuk": [
+        "Ingat, 3^1 artinya 3 saja. Apakah basisnya sama?",
+        "Hitung semua faktor 3. Ada 4 faktor di kiri. Berapa di kanan?",
+        "3^4 = 3×3×3×3 dan 3^1 = 3. Jadi seluruhnya ada __ faktor 3."
+      ],
+      "miskonsepsi": {
+        "81": "M2",
+        "59049": "M4"
+      },
+      "pembahasan": "3^4 × 3^1 = (3×3×3×3) × 3 = 3^5, karena ada 4 + 1 = 5 faktor 3."
+    },
+    {
+      "id": "m1-03",
+      "modul": 1,
+      "soal": "a^2 × a^3",
+      "variabel": true,
+      "perintah": "Sederhanakan. Tulis dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "a^5"
+      ],
+      "petunjuk": [
+        "Huruf a adalah basisnya. Apakah kedua basis sama?",
+        "Hitung ada berapa faktor a seluruhnya.",
+        "(a×a) × (a×a×a) = a × a × a × a × __. Hitung faktor a."
+      ],
+      "miskonsepsi": {
+        "a^6": "M2"
+      },
+      "pembahasan": "a^2 × a^3 = (a×a) × (a×a×a) = a^5, karena ada 2 + 3 = 5 faktor a."
+    },
+    {
+      "id": "m1-04",
+      "modul": 1,
+      "soal": "",
+      "perintah": "Tulis jumlah bakteri sekarang, dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "2^5"
+      ],
+      "cerita": {
+        "bagian": [
+          {
+            "t": "Awalnya ada "
+          },
+          {
+            "t": "2 bakteri",
+            "peran": "awal",
+            "catatan": "Itu jumlah awal, bukan basis."
+          },
+          {
+            "t": ". Bakteri membelah menjadi "
+          },
+          {
+            "t": "dua kali lipat",
+            "peran": "basis",
+            "catatan": "Itu kelipatannya (basis)."
+          },
+          {
+            "t": " sebanyak "
+          },
+          {
+            "t": "4 kali",
+            "peran": "banyak",
+            "catatan": "Itu banyaknya pengulangan (pangkat)."
+          },
+          {
+            "t": ". Berapa bakteri sekarang?"
+          }
+        ],
+        "peran": [
+          {
+            "id": "awal",
+            "label": "Jumlah awal"
+          },
+          {
+            "id": "basis",
+            "label": "Kelipatan (basis)"
+          },
+          {
+            "id": "banyak",
+            "label": "Banyak kali (pangkat)"
+          }
+        ],
+        "rumus": "2 × 2^4",
+        "rumusKata": "jumlah awal × basis berpangkat banyak kali"
+      },
+      "petunjuk": [
+        "Jangan lupa jumlah awalnya. Bentuknya: jumlah awal × basis yang dipangkatkan banyak kali.",
+        "Tulis dulu 2 × 2^4. Angka 2 di depan juga bisa ditulis 2^1.",
+        "2^1 × 2^4: basisnya sama, jadi hitung semua faktor 2."
+      ],
+      "miskonsepsi": {
+        "16": "M9",
+        "256": "M2"
+      },
+      "pembahasan": "2 × 2^4 = 2^1 × 2^4 = 2^5, karena ada 1 + 4 = 5 faktor 2."
+    },
+    {
+      "id": "m1-05",
+      "modul": 1,
+      "soal": "",
+      "perintah": "Tulis jumlah bakteri setelah 6 jam, dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "2^4"
+      ],
+      "cerita": {
+        "bagian": [
+          {
+            "t": "Awalnya ada "
+          },
+          {
+            "t": "2 bakteri",
+            "peran": "awal",
+            "catatan": "Itu jumlah awal."
+          },
+          {
+            "t": ". Bakteri membelah menjadi "
+          },
+          {
+            "t": "dua kali lipat",
+            "peran": "basis",
+            "catatan": "Itu kelipatannya (basis)."
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "setiap 2 jam",
+            "peran": "tiap",
+            "catatan": "Itu selang waktu satu kali membelah."
+          },
+          {
+            "t": ". Berapa bakteri setelah "
+          },
+          {
+            "t": "6 jam",
+            "peran": "waktu",
+            "catatan": "Itu total waktu, belum tentu sama dengan banyak kali membelah."
+          },
+          {
+            "t": "?"
+          }
+        ],
+        "peran": [
+          {
+            "id": "awal",
+            "label": "Jumlah awal"
+          },
+          {
+            "id": "basis",
+            "label": "Kelipatan (basis)"
+          },
+          {
+            "id": "tiap",
+            "label": "Setiap berapa jam"
+          },
+          {
+            "id": "waktu",
+            "label": "Total waktu"
+          }
+        ],
+        "hitung": {
+          "tanya": "Berapa kali bakteri membelah dalam 6 jam, jika membelah setiap 2 jam?",
+          "pilihan": [
+            "2",
+            "3",
+            "6"
+          ],
+          "benar": "3",
+          "catatan": "Banyak kali = total waktu ÷ selang waktu = 6 ÷ 2."
+        },
+        "rumus": "2 × 2^3",
+        "rumusKata": "jumlah awal × basis berpangkat banyak kali"
+      },
+      "petunjuk": [
+        "Pangkatnya adalah banyak kali membelah, bukan total waktu.",
+        "Tulis 2 × 2^3, lalu gabungkan dengan sifat perkalian basis sama.",
+        "2 × 2^3 = 2^1 × 2^3. Ada 1 + 3 faktor 2."
+      ],
+      "miskonsepsi": {
+        "8": "M9",
+        "64": "M10",
+        "128": "M10"
+      },
+      "pembahasan": "Membelah 6 ÷ 2 = 3 kali. 2 × 2^3 = 2^1 × 2^3 = 2^4."
+    },
+    {
+      "id": "m1-06",
+      "modul": 1,
+      "soal": "10^3 × 10^4",
+      "mandiri": true,
+      "perintah": "Tulis hasilnya dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "10^7"
+      ],
+      "petunjuk": [],
+      "miskonsepsi": {
+        "1000000000000": "M2",
+        "100000000000000": "M4"
+      },
+      "pembahasan": "10^3 × 10^4 = 10^(3+4) = 10^7."
+    }
+  ],
+  "modul2": [
+    {
+      "id": "m2-01",
+      "modul": 2,
+      "soal": "5^7 ÷ 5^4",
+      "perintah": "Tulis hasilnya dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "5^3"
+      ],
+      "petunjuk": [
+        "Apakah basisnya sama?",
+        "Faktor yang sama di atas dan di bawah dicoret. Sisa berapa faktor 5?",
+        "Di atas ada 7 faktor 5, di bawah 4 faktor 5. Setelah dicoret, sisa __ faktor 5."
+      ],
+      "miskonsepsi": {
+        "48828125": "M3",
+        "1": "M4"
+      },
+      "pembahasan": "5^7 ÷ 5^4: dicoret 4 pasang faktor 5, sisa 7 − 4 = 3 faktor. Jadi 5^3."
+    },
+    {
+      "id": "m2-02",
+      "modul": 2,
+      "soal": "10^6 ÷ 10^2",
+      "perintah": "Tulis hasilnya dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "10^4"
+      ],
+      "petunjuk": [
+        "Basisnya sama (10). Bagaimana banyak faktornya berubah saat dibagi?",
+        "Di atas 6 faktor 10, di bawah 2 faktor 10. Coret sepasang-sepasang.",
+        "6 faktor dikurangi 2 faktor = __ faktor 10."
+      ],
+      "miskonsepsi": {
+        "100000000": "M3",
+        "1000": "M3",
+        "1": "M4"
+      },
+      "pembahasan": "10^6 ÷ 10^2: dicoret 2 pasang faktor 10, sisa 6 − 2 = 4. Jadi 10^4."
+    },
+    {
+      "id": "m2-03",
+      "modul": 2,
+      "soal": "b^9 ÷ b^5",
+      "variabel": true,
+      "perintah": "Sederhanakan. Tulis dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "b^4"
+      ],
+      "petunjuk": [
+        "Huruf b adalah basisnya. Apakah kedua basis sama?",
+        "Di atas ada 9 faktor b, di bawah 5 faktor b.",
+        "Dicoret 5 pasang, sisa 9 − 5 = __ faktor b."
+      ],
+      "miskonsepsi": {
+        "b^14": "M3",
+        "b^45": "M3"
+      },
+      "pembahasan": "b^9 ÷ b^5: dicoret 5 pasang, sisa 9 − 5 = 4 faktor b. Jadi b^4."
+    },
+    {
+      "id": "m2-04",
+      "modul": 2,
+      "soal": "",
+      "perintah": "Tulis banyak manik di tiap kotak, dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "3^4"
+      ],
+      "cerita": {
+        "bagian": [
+          {
+            "t": "Ada "
+          },
+          {
+            "t": "3^9 manik",
+            "peran": "total",
+            "catatan": "Ini jumlah seluruh manik yang akan dibagi."
+          },
+          {
+            "t": ". Semua manik dibagi rata ke "
+          },
+          {
+            "t": "3^5 kotak",
+            "peran": "kelompok",
+            "catatan": "Ini banyak kotak, yaitu pembaginya."
+          },
+          {
+            "t": ". Berapa manik di tiap kotak?"
+          }
+        ],
+        "peran": [
+          {
+            "id": "total",
+            "label": "Yang dibagi (seluruhnya)"
+          },
+          {
+            "id": "kelompok",
+            "label": "Banyak kotak (pembagi)"
+          }
+        ],
+        "rumus": "3^9 ÷ 3^5",
+        "rumusKata": "seluruhnya ÷ banyak kotak"
+      },
+      "petunjuk": [
+        "Membagi rata berarti pembagian: seluruhnya ÷ banyak kotak.",
+        "Tulis 3^9 ÷ 3^5. Basisnya sama.",
+        "Di atas 9 faktor 3, di bawah 5 faktor 3. Sisa __ faktor 3."
+      ],
+      "miskonsepsi": {
+        "4782969": "M3",
+        "1": "M4"
+      },
+      "pembahasan": "3^9 ÷ 3^5 = 3^(9−5) = 3^4."
+    },
+    {
+      "id": "m2-05",
+      "modul": 2,
+      "soal": "3^8 ÷ 3^3",
+      "mandiri": true,
+      "perintah": "Tulis hasilnya dalam bentuk pangkat.",
+      "bentuk": "pangkat",
+      "kunci": [
+        "3^5"
+      ],
+      "petunjuk": [],
+      "miskonsepsi": {
+        "177147": "M3",
+        "1": "M4"
+      },
+      "pembahasan": "3^8 ÷ 3^3 = 3^(8−3) = 3^5."
+    }
+  ],
+  "modul3": [
+    {
+      "id": "m3-01",
+      "modul": 3,
+      "soal": "4^0",
+      "perintah": "Berapa nilainya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "1"
+      ],
+      "petunjuk": [
+        "Ingat pola tadi: setiap turun satu pangkat, hasilnya dibagi basis.",
+        "4^1 = 4. Bagi 4 dengan basisnya.",
+        "4^0 = 4^1 ÷ 4 = 4 ÷ 4 = __."
+      ],
+      "miskonsepsi": {
+        "0": "M6"
+      },
+      "pembahasan": "4^1 = 4. Turun satu pangkat berarti dibagi 4, jadi 4^0 = 4 ÷ 4 = 1."
+    },
+    {
+      "id": "m3-02",
+      "modul": 3,
+      "soal": "10^-1",
+      "perintah": "Tulis sebagai pecahan.",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "1/10"
+      ],
+      "petunjuk": [
+        "Lanjutkan pola: 10^1 = 10, 10^0 = 1, lalu 10^-1 = ?",
+        "Dari 10^0 = 1, turun satu pangkat berarti dibagi 10.",
+        "10^-1 = 1 ÷ 10 = __."
+      ],
+      "miskonsepsi": {
+        "-10": "M7",
+        "-1/10": "M7"
+      },
+      "pembahasan": "10^0 = 1. Turun satu pangkat, dibagi 10: 10^-1 = 1/10."
+    },
+    {
+      "id": "m3-03",
+      "modul": 3,
+      "soal": "2^-3",
+      "perintah": "Tulis sebagai pecahan.",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "1/8"
+      ],
+      "petunjuk": [
+        "Pangkat negatif artinya kebalikan dari pangkat positifnya.",
+        "2^-3 = 1 per 2^3. Hitung 2^3 dulu.",
+        "2^3 = 8, jadi 2^-3 = 1/__."
+      ],
+      "miskonsepsi": {
+        "-8": "M7",
+        "-6": "M1",
+        "-1/8": "M7"
+      },
+      "pembahasan": "2^-3 = 1/2^3 = 1/8."
+    },
+    {
+      "id": "m3-04",
+      "modul": 3,
+      "soal": "5^-2",
+      "perintah": "Tulis sebagai pecahan.",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "1/25"
+      ],
+      "petunjuk": [
+        "Pangkat negatif artinya kebalikan.",
+        "5^-2 = 1 per 5^2. Hitung 5^2 dulu.",
+        "5^2 = 25, jadi 5^-2 = 1/__."
+      ],
+      "miskonsepsi": {
+        "-25": "M7",
+        "-10": "M1",
+        "1/10": "M1",
+        "-1/25": "M7"
+      },
+      "pembahasan": "5^-2 = 1/5^2 = 1/25."
+    },
+    {
+      "id": "m3-05",
+      "modul": 3,
+      "soal": "7^0 + 7^-1",
+      "perintah": "Tentukan nilainya (pecahan).",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "8/7"
+      ],
+      "petunjuk": [
+        "Hitung bagian pertama dan kedua terpisah, lalu jumlahkan.",
+        "7^0 = 1 dan 7^-1 = 1/7.",
+        "1 + 1/7 = 7/7 + 1/7 = __."
+      ],
+      "miskonsepsi": {
+        "1/7": "M6",
+        "-6": "M7"
+      },
+      "pembahasan": "7^0 = 1 dan 7^-1 = 1/7, jadi 1 + 1/7 = 8/7."
+    },
+    {
+      "id": "m3-06",
+      "modul": 3,
+      "soal": "(-3)^2",
+      "perintah": "Berapa nilainya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "9"
+      ],
+      "petunjuk": [
+        "Kurung menunjukkan apa yang dipangkatkan. Apa yang ada di dalam kurung?",
+        "(-3)^2 artinya (-3) dikalikan dengan dirinya sendiri 2 kali.",
+        "(-3) × (-3) = __."
+      ],
+      "miskonsepsi": {
+        "-9": "M5",
+        "-6": "M1",
+        "6": "M1"
+      },
+      "pembahasan": "(-3)^2 = (−3) × (−3) = 9."
+    },
+    {
+      "id": "m3-07",
+      "modul": 3,
+      "soal": "-3^2",
+      "perintah": "Berapa nilainya?",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "-9"
+      ],
+      "petunjuk": [
+        "Di sini tidak ada kurung. Apa yang dipangkatkan?",
+        "Hanya angka 3 yang dipangkatkan. Tanda minus tetap di luar.",
+        "−3^2 = −(3 × 3) = __."
+      ],
+      "miskonsepsi": {
+        "9": "M5"
+      },
+      "pembahasan": "−3^2 = −(3 × 3) = −9. Tanpa kurung, hanya 3 yang dipangkatkan."
+    },
+    {
+      "id": "m3-08",
+      "modul": 3,
+      "soal": "6^0 + 2^-2",
+      "mandiri": true,
+      "perintah": "Tentukan nilainya (pecahan).",
+      "bentuk": "nilai",
+      "hanyaAngka": true,
+      "kunci": [
+        "5/4"
+      ],
+      "petunjuk": [],
+      "miskonsepsi": {
+        "1/4": "M6",
+        "-3": "M7"
+      },
+      "pembahasan": "6^0 = 1 dan 2^-2 = 1/4, jadi 1 + 1/4 = 5/4."
+    }
+  ]
+}

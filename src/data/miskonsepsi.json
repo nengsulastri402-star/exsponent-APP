@@ -1,0 +1,73 @@
+{
+  "M1": {
+    "nama": "Pangkat bukan perkalian biasa",
+    "penjelasan": "a^n artinya a dikalikan dengan dirinya sendiri n kali, bukan a × n. Contoh: 3^2 = 3 × 3 = 9, bukan 3 × 2 = 6.",
+    "langkah": "Jabarkan dulu pangkatnya menjadi perkalian berulang.",
+    "fase": "input",
+    "pertanyaan": "Jabarkan 3^2. Bilangan 3 dikalikan berapa kali? Apa bedanya dengan 3 × 2?"
+  },
+  "M2": {
+    "nama": "Pangkat dikalikan, padahal harus dijumlahkan",
+    "penjelasan": "Pada perkalian basis sama, banyak faktor bertambah. Jabarkan: (5×5×5) × (5×5) punya 3 + 2 faktor 5.",
+    "langkah": "Hitung ada berapa faktor basis seluruhnya.",
+    "fase": "elaborasi",
+    "pertanyaan": "Jabarkan kedua bentuknya menjadi perkalian berulang. Berapa banyak faktor yang kamu hitung seluruhnya?"
+  },
+  "M3": {
+    "nama": "Operasi pada pangkat tertukar",
+    "penjelasan": "Perkalian basis sama: pangkat dijumlahkan. Pembagian basis sama: pangkat dikurangi, karena faktor yang sama di atas dan di bawah dicoret.",
+    "langkah": "Gambarkan sebagai pecahan, lalu coret faktor yang sama.",
+    "fase": "elaborasi",
+    "pertanyaan": "Kalau dibagi, faktor yang sama di atas dan di bawah kamu apakan? Lalu banyak faktor yang tersisa jadi berapa?"
+  },
+  "M4": {
+    "nama": "Basis ikut dihitung",
+    "penjelasan": "Basisnya tidak berubah. Yang diolah hanya banyak faktornya (pangkat).",
+    "langkah": "Tulis ulang basis yang sama, lalu hitung pangkatnya saja.",
+    "fase": "elaborasi",
+    "pertanyaan": "Setelah dijabarkan, bilangan apa yang dikalikan berulang? Apakah bilangan itu ikut berubah?"
+  },
+  "M5": {
+    "nama": "Kurung dan tanda minus",
+    "penjelasan": "Kurung menentukan apa yang dipangkatkan. (−3)^2 = (−3) × (−3) = 9, sedangkan −3^2 = −(3 × 3) = −9.",
+    "langkah": "Lihat dulu: apakah tanda minus berada di dalam kurung?",
+    "visual": "m5",
+    "fase": "input",
+    "pertanyaan": "Lihat tanda minusnya: ada di dalam atau di luar kurung? Sebenarnya apa yang dipangkatkan?"
+  },
+  "M6": {
+    "nama": "Pangkat nol bukan nol",
+    "penjelasan": "a^0 = 1 (untuk a bukan nol). Lihat polanya: 3^1 = 3, dibagi 3 menjadi 3^0 = 1.",
+    "langkah": "Mulai dari pangkat 1, lalu bagi dengan basisnya.",
+    "fase": "elaborasi",
+    "pertanyaan": "Mulai dari 3^1, lalu bagi dengan 3 setiap turun satu pangkat. Apa yang kamu dapat di pangkat 0?"
+  },
+  "M7": {
+    "nama": "Pangkat negatif bukan bilangan negatif",
+    "penjelasan": "a^-n = 1/a^n. Tanda minus pada pangkat berarti kebalikan, bukan hasil yang negatif.",
+    "langkah": "Hitung dulu pangkat positifnya, lalu tulis sebagai 1 per hasil itu.",
+    "fase": "elaborasi",
+    "pertanyaan": "Tulis 2^3, 2^2, 2^1, 2^0 beserta hasilnya. Lanjutkan polanya ke 2^-1. Hasilnya makin besar atau makin kecil?"
+  },
+  "M8": {
+    "nama": "Basis berbeda",
+    "penjelasan": "Pangkat hanya bisa dijumlahkan atau dikurangi jika basisnya sama.",
+    "langkah": "Periksa dulu apakah basis kedua bilangan sama.",
+    "fase": "input",
+    "pertanyaan": "Periksa dulu: apakah basis kedua bilangan itu sama? Apa artinya untuk banyak faktor yang bisa digabung?"
+  },
+  "M9": {
+    "nama": "Jumlah awal terlupa",
+    "penjelasan": "Jangan lupa jumlah awal. Bentuknya: awal × basis^banyak kali.",
+    "langkah": "Tulis dulu awal × basis^banyak kali, baru sederhanakan.",
+    "fase": "input",
+    "pertanyaan": "Baca soal sekali lagi. Tuliskan semua yang diketahui, termasuk jumlah awalnya, sebelum menghitung."
+  },
+  "M10": {
+    "nama": "Total waktu dipakai sebagai banyak kali",
+    "penjelasan": "Banyak kali = total waktu ÷ selang waktu satu kali. Total waktu belum tentu sama dengan banyak kali.",
+    "langkah": "Hitung dulu berapa kali kejadian itu berulang.",
+    "fase": "elaborasi",
+    "pertanyaan": "Satu kali kejadian butuh berapa lama? Berapa kali kejadian itu muat dalam total waktu di soal?"
+  }
+}

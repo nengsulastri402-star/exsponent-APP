@@ -1,0 +1,16 @@
+{
+  "catatan": "DRAF terjemahan skala Leppink dkk. (2013). Periksa jumlah dan bunyi butir dengan artikel aslinya sebelum dipakai untuk penelitian, lalu uji keterbacaan pada siswa.",
+  "kiri": "Tidak sama sekali",
+  "kanan": "Sangat",
+  "butir": [
+    { "id": "IL1", "jenis": "Intrinsic", "teks": "Topik yang dibahas dalam kegiatan belajar ini sangat rumit." },
+    { "id": "IL2", "jenis": "Intrinsic", "teks": "Kegiatan ini membahas rumus yang menurut saya sangat rumit." },
+    { "id": "IL3", "jenis": "Intrinsic", "teks": "Kegiatan ini membahas konsep dan istilah yang menurut saya sangat rumit." },
+    { "id": "EL1", "jenis": "Extraneous", "teks": "Petunjuk dan/atau penjelasan dalam kegiatan ini sangat tidak jelas." },
+    { "id": "EL2", "jenis": "Extraneous", "teks": "Petunjuk dan/atau penjelasan dalam kegiatan ini sangat tidak efektif untuk belajar." },
+    { "id": "EL3", "jenis": "Extraneous", "teks": "Petunjuk dan/atau penjelasan dalam kegiatan ini penuh bahasa yang membingungkan." },
+    { "id": "GL1", "jenis": "Germane", "teks": "Kegiatan ini benar-benar menambah pemahaman saya tentang topik yang dibahas." },
+    { "id": "GL2", "jenis": "Germane", "teks": "Kegiatan ini benar-benar menambah pemahaman saya tentang rumus yang dibahas." },
+    { "id": "GL3", "jenis": "Germane", "teks": "Kegiatan ini benar-benar menambah pemahaman saya tentang konsep dan istilah yang dibahas." }
+  ]
+}

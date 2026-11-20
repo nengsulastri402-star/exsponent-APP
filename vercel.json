@@ -1,0 +1,4 @@
+{
+  "functions": { "api/*.js": { "maxDuration": 30 } },
+  "rewrites": [{ "source": "/((?!api/|assets/|sw\\.js|workbox-.*|manifest\\.webmanifest|registerSW\\.js|.*\\.(?:png|svg|ico|js|css|json|webmanifest)).*)", "destination": "/index.html" }]
+}

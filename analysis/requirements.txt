@@ -1,0 +1,4 @@
+pandas>=2.2
+matplotlib>=3.9
+# Hanya dipakai ekspor_data.py untuk membaca tabel Supabase dari laptop peneliti.
+supabase>=2.0

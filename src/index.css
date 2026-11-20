@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+/* Token desain: lihat DESIGN.md §2–3. Kontras teks minimal 4.5:1. */
+@theme {
+  --color-basis: #1e3a8a;
+  --color-basis-lembut: #e0e7ff;
+  --color-pangkat: #c2410c;
+  --color-pangkat-lembut: #ffedd5;
+  --color-benar: #15803d;
+  --color-benar-lembut: #dcfce7;
+  --color-perhatian: #b45309;
+  --color-perhatian-lembut: #fef3c7;
+  --color-latar: #f8fafc;
+  --color-kartu: #ffffff;
+  --color-teks: #0f172a;
+  --color-teks-pelan: #475569;
+  --color-garis: #cbd5e1;
+  --font-sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-latar);
+  color: var(--color-teks);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-basis);
+  outline-offset: 2px;
+}
+
+/* Hormati pengaturan "kurangi gerakan" (DESIGN.md §6). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
