@@ -54,10 +54,24 @@ function pesanKesalahan(err) {
   }
 }
 
+// Daftar kode yang bisa diketuk. Hanya kode, tidak ada nama siswa di kode program.
+const DAFTAR_KODE = Array.from({ length: 30 }, (_, i) => `P${String(i + 1).padStart(2, '0')}`)
+
+// Nama panggilan hanya disimpan di perangkat ini (localStorage), tidak dikirim ke database.
+const kunciPanggilan = (kode) => `eksponen.panggilan.${kode}`
+const ambilPanggilan = (kode) => {
+  try {
+    return localStorage.getItem(kunciPanggilan(kode)) || ''
+  } catch {
+    return ''
+  }
+}
+
 export default function Masuk() {
   const { siswa, masuk, masukPratinjau } = useSiswa()
   const navigate = useNavigate()
   const [kode, setKode] = useState('')
+  const [panggilan, setPanggilan] = useState('')
   const [pesan, setPesan] = useState('')
   const [detail, setDetail] = useState('')
   const [memuat, setMemuat] = useState(false)
@@ -70,6 +84,12 @@ export default function Masuk() {
     if (!POLA_KODE.test(bersih)) {
       setPesan('Tulis kodenya seperti ini: P01')
       return
+    }
+    try {
+      const nama = panggilan.trim().slice(0, 20)
+      if (nama) localStorage.setItem(kunciPanggilan(bersih), nama)
+    } catch {
+      // abaikan
     }
     setMemuat(true)
     setPesan('')
@@ -105,8 +125,28 @@ export default function Masuk() {
         onSubmit={kirim}
         className="rounded-2xl border border-garis bg-kartu p-5"
       >
-        <label htmlFor="kode" className="block font-semibold text-teks">
-          Kode kamu
+        <p className="font-semibold text-teks">Ketuk kodemu</p>
+        <div className="mt-2 grid grid-cols-5 gap-2" role="group" aria-label="Pilih kode">
+          {DAFTAR_KODE.map((k) => (
+            <button
+              key={k}
+              type="button"
+              onClick={() => {
+                setKode(k)
+                setPanggilan(ambilPanggilan(k))
+              }}
+              aria-pressed={kode === k}
+              aria-label={`Kode ${k}`}
+              className={`min-h-11 rounded-lg border-2 text-sm font-bold ${
+                kode === k ? 'border-basis bg-basis text-white' : 'border-garis text-teks'
+              }`}
+            >
+              {k}
+            </button>
+          ))}
+        </div>
+        <label htmlFor="kode" className="mt-4 block font-semibold text-teks">
+          Atau tulis kodenya
         </label>
         <input
           id="kode"
@@ -121,6 +161,20 @@ export default function Masuk() {
           aria-describedby={pesan ? 'pesan-masuk' : undefined}
           className="mt-2 min-h-12 w-full rounded-xl border-2 border-garis px-4 text-xl tracking-widest uppercase focus:border-basis"
         />
+
+        <label htmlFor="panggilan" className="mt-4 block font-semibold text-teks">
+          Nama panggilan (boleh kosong)
+        </label>
+        <input
+          id="panggilan"
+          value={panggilan}
+          onChange={(e) => setPanggilan(e.target.value)}
+          maxLength={20}
+          placeholder="Contoh: Budi"
+          autoComplete="off"
+          className="mt-2 min-h-12 w-full rounded-xl border-2 border-garis px-4 text-lg focus:border-basis"
+        />
+        <p className="mt-1 text-xs text-teks-pelan">Hanya tersimpan di HP atau komputer ini.</p>
 
         {pesan && (
           <p
