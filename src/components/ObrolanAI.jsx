@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { getKonteks } from '../lib/konteks'
-import { useSiswa } from '../lib/siswaContext'
+import { getKonteks } from '../lib/konteks.js'
+import { useSiswa } from '../lib/siswaContext.js'
 import Matematika from './Matematika.jsx'
 
 // Obrolan bebas siswa dengan AI (Gemini lewat /api/chat). Riwayat disimpan
