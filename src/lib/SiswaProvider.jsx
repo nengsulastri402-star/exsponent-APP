@@ -4,6 +4,7 @@ import {
   hapusSiswa,
   keluarAkun,
   masukDenganKode,
+  masukOtomatis,
   simpanSiswa,
 } from './auth'
 import { sinkronkanAntrian } from './logger'
@@ -14,6 +15,12 @@ export default function SiswaProvider({ children }) {
 
   const masuk = useCallback(async (kode) => {
     const baru = await masukDenganKode(kode)
+    simpanSiswa(baru)
+    setSiswa(baru)
+  }, [])
+
+  const masukNama = useCallback(async (panggilan) => {
+    const baru = await masukOtomatis(panggilan)
     simpanSiswa(baru)
     setSiswa(baru)
   }, [])
@@ -45,8 +52,8 @@ export default function SiswaProvider({ children }) {
   }, [])
 
   const nilai = useMemo(
-    () => ({ siswa, masuk, masukPratinjau, keluar }),
-    [siswa, masuk, masukPratinjau, keluar],
+    () => ({ siswa, masuk, masukNama, masukPratinjau, keluar }),
+    [siswa, masuk, masukNama, masukPratinjau, keluar],
   )
 
   return <SiswaContext.Provider value={nilai}>{children}</SiswaContext.Provider>

@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import { useSiswa } from '../lib/siswaContext'
 
-const panggilanDi = (kode) => {
+const panggilanDi = () => {
   try {
-    return localStorage.getItem(`eksponen.panggilan.${kode}`) || ''
+    return localStorage.getItem('eksponen.panggilan.terakhir') || ''
   } catch {
     return ''
   }
@@ -25,7 +25,7 @@ export default function Beranda() {
     <main className="mx-auto min-h-dvh max-w-2xl px-4 pt-6 pb-24">
       <header className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-teks">Halo{panggilanDi(siswa.kode) ? `, ${panggilanDi(siswa.kode)}` : ''}!</h1>
+          <h1 className="text-2xl font-bold text-teks">Halo{panggilanDi() ? `, ${panggilanDi()}` : ''}!</h1>
           <p className="text-teks-pelan">
             Kode: <strong className="text-teks">{siswa.kode}</strong>
             {siswa.pratinjau && ' (pratinjau)'}

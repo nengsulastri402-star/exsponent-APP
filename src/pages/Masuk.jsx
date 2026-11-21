@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import Pangkat from '../components/Pangkat.jsx'
-import { POLA_KODE } from '../lib/auth'
-import { useSiswa } from '../lib/siswaContext'
-import { supabaseSiap } from '../lib/supabase'
+import { POLA_KODE } from '../lib/auth.js'
+import { useSiswa } from '../lib/siswaContext.js'
+import { supabaseSiap } from '../lib/supabase.js'
 
 // Mengembalikan { pesan, detail }. `pesan` untuk siswa; `detail` untuk peneliti
 // (tampil kecil di bawah pesan, membantu mencari penyebab).
@@ -57,26 +57,55 @@ function pesanKesalahan(err) {
 // Daftar kode yang bisa diketuk. Hanya kode, tidak ada nama siswa di kode program.
 const DAFTAR_KODE = Array.from({ length: 30 }, (_, i) => `P${String(i + 1).padStart(2, '0')}`)
 
-// Nama panggilan hanya disimpan di perangkat ini (localStorage), tidak dikirim ke database.
-const kunciPanggilan = (kode) => `eksponen.panggilan.${kode}`
-const ambilPanggilan = (kode) => {
-  try {
-    return localStorage.getItem(kunciPanggilan(kode)) || ''
-  } catch {
-    return ''
-  }
-}
-
 export default function Masuk() {
-  const { siswa, masuk, masukPratinjau } = useSiswa()
+  const { siswa, masuk, masukNama, masukPratinjau } = useSiswa()
   const navigate = useNavigate()
   const [kode, setKode] = useState('')
-  const [panggilan, setPanggilan] = useState('')
+  const [panggilan, setPanggilan] = useState(() => {
+    try {
+      return localStorage.getItem('eksponen.panggilan.terakhir') || ''
+    } catch {
+      return ''
+    }
+  })
   const [pesan, setPesan] = useState('')
   const [detail, setDetail] = useState('')
   const [memuat, setMemuat] = useState(false)
+  const [denganKode, setDenganKode] = useState(false)
 
   if (siswa) return <Navigate to="/" replace />
+
+  async function kirimNama(e) {
+    e.preventDefault()
+    const nama = panggilan.trim().slice(0, 20)
+    if (nama.length < 2) {
+      setPesan('Tulis nama panggilanmu dulu ya.')
+      return
+    }
+    try {
+      localStorage.setItem('eksponen.panggilan.terakhir', nama)
+    } catch {
+      // abaikan
+    }
+    setMemuat(true)
+    setPesan('')
+    setDetail('')
+    try {
+      await masukNama(nama)
+      navigate('/', { replace: true })
+    } catch (err) {
+      console.error('Gagal masuk:', err)
+      const hasil = String(err?.message ?? err).includes('kode_habis')
+        ? { pesan: 'Semua tempat sudah terpakai. Beri tahu kakak peneliti.', detail: 'Kode di tabel siswa habis. Tambah kode lewat seed.sql.' }
+        : String(err?.message ?? err).toLowerCase().includes('masuk_otomatis')
+          ? { pesan: 'Ada masalah saat masuk. Coba lagi sebentar lagi.', detail: 'Fungsi masuk_otomatis belum ada. Jalankan supabase/migrations/0002_masuk_otomatis.sql di SQL Editor.' }
+          : pesanKesalahan(err)
+      setPesan(hasil.pesan)
+      setDetail(hasil.detail)
+    } finally {
+      setMemuat(false)
+    }
+  }
 
   async function kirim(e) {
     e.preventDefault()
@@ -84,12 +113,6 @@ export default function Masuk() {
     if (!POLA_KODE.test(bersih)) {
       setPesan('Tulis kodenya seperti ini: P01')
       return
-    }
-    try {
-      const nama = panggilan.trim().slice(0, 20)
-      if (nama) localStorage.setItem(kunciPanggilan(bersih), nama)
-    } catch {
-      // abaikan
     }
     setMemuat(true)
     setPesan('')
@@ -113,93 +136,127 @@ export default function Masuk() {
     navigate('/', { replace: true })
   }
 
+  const kotakPesan = pesan && (
+    <p
+      id="pesan-masuk"
+      role="alert"
+      className="mt-3 rounded-lg bg-perhatian-lembut px-3 py-2 text-perhatian"
+    >
+      {pesan}
+      {detail && (
+        <span className="mt-2 block border-t border-perhatian/30 pt-2 text-xs break-words">
+          Info untuk peneliti: {detail}
+        </span>
+      )}
+    </p>
+  )
+
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center px-4 py-8">
       <div className="mb-6 text-center">
         <Pangkat basis="a" pangkat="n" ukuran="lg" />
         <h1 className="mt-4 text-2xl font-bold text-teks">Belajar Eksponen</h1>
-        <p className="mt-1 text-teks-pelan">Masukkan kodemu untuk mulai.</p>
+        <p className="mt-1 text-teks-pelan">
+          {denganKode ? 'Masukkan kodemu untuk mulai.' : 'Tulis nama panggilanmu untuk mulai.'}
+        </p>
       </div>
 
-      <form
-        onSubmit={kirim}
-        className="rounded-2xl border border-garis bg-kartu p-5"
-      >
-        <p className="font-semibold text-teks">Ketuk kodemu</p>
-        <div className="mt-2 grid grid-cols-5 gap-2" role="group" aria-label="Pilih kode">
-          {DAFTAR_KODE.map((k) => (
-            <button
-              key={k}
-              type="button"
-              onClick={() => {
-                setKode(k)
-                setPanggilan(ambilPanggilan(k))
-              }}
-              aria-pressed={kode === k}
-              aria-label={`Kode ${k}`}
-              className={`min-h-11 rounded-lg border-2 text-sm font-bold ${
-                kode === k ? 'border-basis bg-basis text-white' : 'border-garis text-teks'
-              }`}
-            >
-              {k}
-            </button>
-          ))}
-        </div>
-        <label htmlFor="kode" className="mt-4 block font-semibold text-teks">
-          Atau tulis kodenya
-        </label>
-        <input
-          id="kode"
-          value={kode}
-          onChange={(e) => setKode(e.target.value.toUpperCase())}
-          maxLength={4}
-          placeholder="P01"
-          autoCapitalize="characters"
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck={false}
-          aria-describedby={pesan ? 'pesan-masuk' : undefined}
-          className="mt-2 min-h-12 w-full rounded-xl border-2 border-garis px-4 text-xl tracking-widest uppercase focus:border-basis"
-        />
-
-        <label htmlFor="panggilan" className="mt-4 block font-semibold text-teks">
-          Nama panggilan (boleh kosong)
-        </label>
-        <input
-          id="panggilan"
-          value={panggilan}
-          onChange={(e) => setPanggilan(e.target.value)}
-          maxLength={20}
-          placeholder="Contoh: Budi"
-          autoComplete="off"
-          className="mt-2 min-h-12 w-full rounded-xl border-2 border-garis px-4 text-lg focus:border-basis"
-        />
-        <p className="mt-1 text-xs text-teks-pelan">Hanya tersimpan di HP atau komputer ini.</p>
-
-        {pesan && (
-          <p
-            id="pesan-masuk"
-            role="alert"
-            className="mt-3 rounded-lg bg-perhatian-lembut px-3 py-2 text-perhatian"
-          >
-            {pesan}
-            {detail && (
-              <span className="mt-2 block border-t border-perhatian/30 pt-2 text-xs break-words">
-                Info untuk peneliti: {detail}
-              </span>
-            )}
+      {!denganKode ? (
+        <form onSubmit={kirimNama} className="rounded-2xl border border-garis bg-kartu p-5">
+          <label htmlFor="panggilan" className="block font-semibold text-teks">
+            Nama panggilanmu
+          </label>
+          <input
+            id="panggilan"
+            value={panggilan}
+            onChange={(e) => setPanggilan(e.target.value)}
+            maxLength={20}
+            placeholder="Contoh: Budi"
+            autoComplete="off"
+            aria-describedby={pesan ? 'pesan-masuk' : undefined}
+            className="mt-2 min-h-12 w-full rounded-xl border-2 border-garis px-4 text-xl focus:border-basis"
+          />
+          <p className="mt-1 text-xs text-teks-pelan">
+            Nama hanya tersimpan di HP atau komputer ini. Jangan tulis nama lengkap.
           </p>
-        )}
-
-        <button
-          type="submit"
-          disabled={memuat || !supabaseSiap}
-          aria-label="Masuk dengan kode"
-          className="mt-4 min-h-12 w-full rounded-xl bg-basis px-4 text-lg font-bold text-white disabled:opacity-50"
-        >
-          {memuat ? 'Memeriksa…' : 'Masuk'}
-        </button>
-      </form>
+          {kotakPesan}
+          <button
+            type="submit"
+            disabled={memuat || !supabaseSiap}
+            aria-label="Masuk dengan nama panggilan"
+            className="mt-4 min-h-12 w-full rounded-xl bg-basis px-4 text-lg font-bold text-white disabled:opacity-50"
+          >
+            {memuat ? 'Memeriksa…' : 'Masuk'}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setDenganKode(true)
+              setPesan('')
+              setDetail('')
+            }}
+            className="mt-3 min-h-11 w-full text-sm text-teks-pelan underline"
+          >
+            Punya kode dari guru?
+          </button>
+        </form>
+      ) : (
+        <form onSubmit={kirim} className="rounded-2xl border border-garis bg-kartu p-5">
+          <p className="font-semibold text-teks">Ketuk kodemu</p>
+          <div className="mt-2 grid grid-cols-5 gap-2" role="group" aria-label="Pilih kode">
+            {DAFTAR_KODE.map((k) => (
+              <button
+                key={k}
+                type="button"
+                onClick={() => setKode(k)}
+                aria-pressed={kode === k}
+                aria-label={`Kode ${k}`}
+                className={`min-h-11 rounded-lg border-2 text-sm font-bold ${
+                  kode === k ? 'border-basis bg-basis text-white' : 'border-garis text-teks'
+                }`}
+              >
+                {k}
+              </button>
+            ))}
+          </div>
+          <label htmlFor="kode" className="mt-4 block font-semibold text-teks">
+            Atau tulis kodenya
+          </label>
+          <input
+            id="kode"
+            value={kode}
+            onChange={(e) => setKode(e.target.value.toUpperCase())}
+            maxLength={4}
+            placeholder="P01"
+            autoCapitalize="characters"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            aria-describedby={pesan ? 'pesan-masuk' : undefined}
+            className="mt-2 min-h-12 w-full rounded-xl border-2 border-garis px-4 text-xl tracking-widest uppercase focus:border-basis"
+          />
+          {kotakPesan}
+          <button
+            type="submit"
+            disabled={memuat || !supabaseSiap}
+            aria-label="Masuk dengan kode"
+            className="mt-4 min-h-12 w-full rounded-xl bg-basis px-4 text-lg font-bold text-white disabled:opacity-50"
+          >
+            {memuat ? 'Memeriksa…' : 'Masuk'}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setDenganKode(false)
+              setPesan('')
+              setDetail('')
+            }}
+            className="mt-3 min-h-11 w-full text-sm text-teks-pelan underline"
+          >
+            Kembali masuk dengan nama
+          </button>
+        </form>
+      )}
 
       {!supabaseSiap && (
         <div className="mt-4 rounded-xl border border-perhatian bg-perhatian-lembut p-4 text-sm text-perhatian">

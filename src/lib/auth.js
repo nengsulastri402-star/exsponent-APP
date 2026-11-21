@@ -59,12 +59,49 @@ export async function masukDenganKode(kode) {
   }
 }
 
-export async function keluarAkun() {
-  if (supabaseSiap) {
-    try {
-      await supabase.auth.signOut()
-    } catch {
-      // Tidak masalah bila gagal (mis. offline); data lokal tetap dihapus.
-    }
+const KUNCI_AKUN = 'eksponen.akunPanggilan'
+
+/**
+ * Masuk hanya dengan nama panggilan. Nama tidak dikirim ke database: ia hanya
+ * dipakai di perangkat ini untuk tahu apakah sesi anonim lama boleh dipakai lagi.
+ * Database memberi kode kosong berikutnya (fungsi masuk_otomatis).
+ */
+export async function masukOtomatis(panggilan) {
+  if (!supabaseSiap) throw new Error('SUPABASE_BELUM_DIATUR')
+  const nama = String(panggilan).trim().toLowerCase()
+
+  let akunLama = ''
+  try {
+    akunLama = localStorage.getItem(KUNCI_AKUN) || ''
+  } catch {
+    // abaikan
+  }
+  const { data: sesiAuth } = await supabase.auth.getSession()
+  // Nama berbeda di perangkat yang sama = siswa lain: mulai sesi anonim baru.
+  if (sesiAuth.session && akunLama !== nama) await supabase.auth.signOut()
+
+  const { data: cek } = await supabase.auth.getSession()
+  if (!cek.session) {
+    const { error } = await supabase.auth.signInAnonymously()
+    if (error) throw error
+  }
+
+  const { data, error } = await supabase.rpc('masuk_otomatis')
+  if (error) throw error
+  try {
+    localStorage.setItem(KUNCI_AKUN, nama)
+  } catch {
+    // abaikan
+  }
+  return {
+    id: data.siswa_id,
+    sesiId: data.sesi_id,
+    nomorSesi: data.nomor_sesi,
+    kode: data.kode,
+    pratinjau: false,
   }
 }
+
+// Sesi anonim sengaja dipertahankan saat keluar, agar siswa yang sama (nama sama,
+// perangkat sama) kembali ke kodenya (lihat masukOtomatis). Hanya data lokal dihapus.
+export async function keluarAkun() {}
