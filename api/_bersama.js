@@ -81,6 +81,7 @@ export async function tanyaAI({ messages, maxTokens, temperature = 0.3, waktuMs 
   const p = penyedia()
   const daftar = [...new Set([p.model[0], terbukti[p.nama], ...p.model.slice(1)].filter(Boolean))]
   const mulai = Date.now()
+  let terakhir = 0
   for (const model of daftar) {
     const sisa = waktuMs - (Date.now() - mulai)
     if (sisa < 2000) return { galat: 'waktu_habis', status: 504 }
@@ -106,7 +107,11 @@ export async function tanyaAI({ messages, maxTokens, temperature = 0.3, waktuMs 
         if (/api[_ ]key/i.test(isi)) return { galat: 'kunci_tidak_valid', status: 503 }
         continue // nama model atau parameter mungkin tidak dikenal
       }
-      if (!r.ok) return { galat: 'penyedia_gagal', status: 502, kodeAsal: r.status }
+      if (!r.ok) {
+        // Galat 5xx dari Google (mis. model sedang sibuk): coba model berikutnya.
+        terakhir = r.status
+        continue
+      }
       const data = await r.json()
       const teks = data?.choices?.[0]?.message?.content
       if (!teks) return { galat: 'balasan_kosong', status: 502 }
@@ -119,6 +124,7 @@ export async function tanyaAI({ messages, maxTokens, temperature = 0.3, waktuMs 
       clearTimeout(timer)
     }
   }
+  if (terakhir) return { galat: 'penyedia_gagal', status: 502, kodeAsal: terakhir }
   return { galat: 'model_tidak_ada', status: 502 }
 }
 

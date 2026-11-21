@@ -64,7 +64,7 @@ export default async function handler(req, res) {
     maxTokens: 220,
     waktuMs: 15000,
   })
-  if (hasil.galat) return kirim(res, hasil.status, { error: hasil.galat })
+  if (hasil.galat) return kirim(res, hasil.status, { error: hasil.galat, kode: hasil.kodeAsal })
   const teks = potong(hasil.teks, 500).replace(/[*_`#]/g, '')
   if (!teks) return kirim(res, 502, { error: 'balasan_kosong' })
   return kirim(res, 200, { teks })

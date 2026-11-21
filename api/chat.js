@@ -86,7 +86,7 @@ export default async function handler(req, res) {
     temperature: 0.4,
     waktuMs: 28000,
   })
-  if (hasil.galat) return kirim(res, hasil.status, { error: hasil.galat })
+  if (hasil.galat) return kirim(res, hasil.status, { error: hasil.galat, kode: hasil.kodeAsal })
   const teks = bersihkan(hasil.teks)
   if (!teks) return kirim(res, 502, { error: 'balasan_kosong' })
   return kirim(res, 200, { teks })
