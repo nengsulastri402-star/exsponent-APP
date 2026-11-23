@@ -65,15 +65,16 @@ function penyedia() {
     kunci: bersihKunci(e.GEMINI_API_KEY),
     alamat: e.GEMINI_URL || 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
     model: [e.GEMINI_MODEL, 'gemini-2.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash-lite', 'gemini-flash-lite-latest'],
-    // Model Gemini "berpikir" dulu; dibuat ringan agar cepat dan tidak menghabiskan batas token.
-    tambahan: { reasoning_effort: 'low' },
-    kaliToken: 3,
+    // Model Gemini "berpikir" dulu. 'none' mematikannya agar jawaban cepat (ubah lewat GEMINI_BERPIKIR=low bila perlu).
+    tambahan: { reasoning_effort: e.GEMINI_BERPIKIR || 'none' },
+    kaliToken: 2,
   }
 }
 
 export const adaKunci = () => Boolean(penyedia().kunci)
 
 const terbukti = {}
+const tanpaBerpikir = new Set()
 
 // Memanggil penyedia AI. Mengembalikan { teks } atau { galat, status }.
 // Galat khusus: kuota_habis (429), kunci_tidak_valid, model_tidak_ada.
@@ -82,11 +83,14 @@ export async function tanyaAI({ messages, maxTokens, temperature = 0.3, waktuMs 
   const daftar = [...new Set([p.model[0], terbukti[p.nama], ...p.model.slice(1)].filter(Boolean))]
   const mulai = Date.now()
   let terakhir = 0
+  let macet = false
+  const jatahMs = Number(process.env.GEMINI_JATAH_MS) || 9000
   for (const model of daftar) {
     const sisa = waktuMs - (Date.now() - mulai)
     if (sisa < 2000) return { galat: 'waktu_habis', status: 504 }
     const batas = new AbortController()
-    const timer = setTimeout(() => batas.abort(), sisa)
+    // Tiap model diberi jatah terbatas; bila macet, pindah ke model berikutnya.
+    const timer = setTimeout(() => batas.abort(), Math.min(sisa, jatahMs))
     try {
       const r = await fetch(p.alamat, {
         method: 'POST',
@@ -96,7 +100,7 @@ export async function tanyaAI({ messages, maxTokens, temperature = 0.3, waktuMs 
           temperature,
           max_tokens: maxTokens * p.kaliToken,
           messages,
-          ...p.tambahan,
+          ...(tanpaBerpikir.has(model) ? {} : p.tambahan),
         }),
         signal: batas.signal,
       })
@@ -105,6 +109,10 @@ export async function tanyaAI({ messages, maxTokens, temperature = 0.3, waktuMs 
       if (r.status === 400 || r.status === 404 || r.status === 422) {
         const isi = await r.text().catch(() => '')
         if (/api[_ ]key/i.test(isi)) return { galat: 'kunci_tidak_valid', status: 503 }
+        if (/reasoning|thinking/i.test(isi) && !tanpaBerpikir.has(model)) {
+          tanpaBerpikir.add(model) // model ini menolak parameter berpikir: ulangi tanpa itu
+          daftar.splice(daftar.indexOf(model) + 1, 0, model)
+        }
         continue // nama model atau parameter mungkin tidak dikenal
       }
       if (!r.ok) {
@@ -118,12 +126,16 @@ export async function tanyaAI({ messages, maxTokens, temperature = 0.3, waktuMs 
       terbukti[p.nama] = model
       return { teks }
     } catch (err) {
-      if (err?.name === 'AbortError') return { galat: 'waktu_habis', status: 504 }
+      if (err?.name === 'AbortError') {
+        macet = true
+        continue // model ini terlalu lama: coba yang lain
+      }
       return { galat: 'jaringan_gagal', status: 502 }
     } finally {
       clearTimeout(timer)
     }
   }
+  if (macet) return { galat: 'waktu_habis', status: 504 }
   if (terakhir) return { galat: 'penyedia_gagal', status: 502, kodeAsal: terakhir }
   return { galat: 'model_tidak_ada', status: 502 }
 }
