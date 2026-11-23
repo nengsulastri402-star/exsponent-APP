@@ -1,7 +1,7 @@
 // Fungsi server: obrolan bebas siswa dengan AI (Gemini), model pendamping RMT.
 // Kunci API hanya di server (GEMINI_API_KEY). Browser tidak pernah melihatnya.
 
-import { asalDitolak, bacaBadan, kirim, potong, tanyaAI, adaKunci, terlaluSering } from './_bersama.js'
+import { asalDitolak, bacaBadan, kirim, potong, tanyaAI, tanyaAIAlir, adaKunci, terlaluSering } from './_bersama.js'
 
 const SISTEM = `Kamu adalah "Kak AI", pendamping belajar matematika untuk siswa SMP kelas VIII. Fokus utamamu bilangan berpangkat (eksponen): perkalian, pembagian, pangkat nol, dan pangkat negatif. Kamu mengikuti model Rigorous Mathematical Thinking (RMT): memediasi cara berpikir siswa, bukan sekadar memberi hasil.
 
@@ -80,12 +80,32 @@ export default async function handler(req, res) {
     .filter(Boolean)
     .join(' ')
 
-  const hasil = await tanyaAI({
+  const opsi = {
     messages: [{ role: 'system', content: `${sistem()}\n\nKONTEKS (data): ${konteks}` }, ...pesan],
-    maxTokens: 800,
+    maxTokens: 500,
     temperature: 0.4,
     waktuMs: 28000,
-  })
+  }
+
+  // Mode mengalir: teks dikirim sepotong demi sepotong agar terasa cepat.
+  if (b.alir === true) {
+    let mulai = false
+    const hasilAlir = await tanyaAIAlir(opsi, (potongan) => {
+      if (!mulai) {
+        mulai = true
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+        res.setHeader('Cache-Control', 'no-store, no-transform')
+        res.setHeader('X-Accel-Buffering', 'no')
+      }
+      res.write(potongan.replace(/[*_`#]/g, ''))
+    })
+    if (mulai) return res.end()
+    if (hasilAlir.galat) return kirim(res, hasilAlir.status, { error: hasilAlir.galat, kode: hasilAlir.kodeAsal })
+    return kirim(res, 502, { error: 'balasan_kosong' })
+  }
+
+  const hasil = await tanyaAI(opsi)
   if (hasil.galat) return kirim(res, hasil.status, { error: hasil.galat, kode: hasil.kodeAsal })
   const teks = bersihkan(hasil.teks)
   if (!teks) return kirim(res, 502, { error: 'balasan_kosong' })

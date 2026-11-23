@@ -140,6 +140,106 @@ export async function tanyaAI({ messages, maxTokens, temperature = 0.3, waktuMs 
   return { galat: 'model_tidak_ada', status: 502 }
 }
 
+// Versi mengalir: teks dikirim sepotong demi sepotong lewat `saatTeks` begitu Google
+// mulai menulis, jadi siswa melihat kata pertama dalam 1-2 detik. Mengembalikan { teks }
+// atau { galat, status } (galat hanya bila belum ada teks yang terkirim).
+export async function tanyaAIAlir({ messages, maxTokens, temperature = 0.3, waktuMs = 28000 }, saatTeks) {
+  const p = penyedia()
+  const daftar = [...new Set([p.model[0], terbukti[p.nama], ...p.model.slice(1)].filter(Boolean))]
+  const mulai = Date.now()
+  const jatahMs = Number(process.env.GEMINI_JATAH_MS) || 9000
+  let terakhir = 0
+  let macet = false
+  for (const model of daftar) {
+    const sisa = waktuMs - (Date.now() - mulai)
+    if (sisa < 2000) break
+    const batas = new AbortController()
+    // Sampai kata pertama datang, jatahnya terbatas; sesudahnya boleh sampai waktu total habis.
+    let timer = setTimeout(() => batas.abort(), Math.min(sisa, jatahMs))
+    let penuh = ''
+    try {
+      const r = await fetch(p.alamat, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${p.kunci}` },
+        body: JSON.stringify({
+          model,
+          temperature,
+          max_tokens: maxTokens * p.kaliToken,
+          messages,
+          stream: true,
+          ...(tanpaBerpikir.has(model) ? {} : p.tambahan),
+        }),
+        signal: batas.signal,
+      })
+      if (r.status === 401 || r.status === 403) return { galat: 'kunci_tidak_valid', status: 503 }
+      if (r.status === 429) return { galat: 'kuota_habis', status: 429 }
+      if (r.status === 400 || r.status === 404 || r.status === 422) {
+        const isi = await r.text().catch(() => '')
+        if (/api[_ ]key/i.test(isi)) return { galat: 'kunci_tidak_valid', status: 503 }
+        if (/reasoning|thinking/i.test(isi) && !tanpaBerpikir.has(model)) {
+          tanpaBerpikir.add(model)
+          daftar.splice(daftar.indexOf(model) + 1, 0, model)
+        }
+        continue
+      }
+      if (!r.ok) {
+        terakhir = r.status
+        continue
+      }
+      const baca = r.body.getReader()
+      const dekode = new TextDecoder()
+      let sisaBaris = ''
+      let selesai = false
+      while (!selesai) {
+        const { done, value } = await baca.read()
+        if (done) break
+        sisaBaris += dekode.decode(value, { stream: true })
+        const baris = sisaBaris.split('\n')
+        sisaBaris = baris.pop()
+        for (const b of baris) {
+          const t = b.trim()
+          if (!t.startsWith('data:')) continue
+          const isi = t.slice(5).trim()
+          if (isi === '[DONE]') {
+            selesai = true
+            break
+          }
+          let potongan = ''
+          try {
+            potongan = JSON.parse(isi)?.choices?.[0]?.delta?.content || ''
+          } catch {
+            continue
+          }
+          if (!potongan) continue
+          if (!penuh) {
+            clearTimeout(timer)
+            timer = setTimeout(() => batas.abort(), Math.max(1000, waktuMs - (Date.now() - mulai)))
+          }
+          penuh += potongan
+          saatTeks(potongan)
+        }
+      }
+      if (penuh) {
+        terbukti[p.nama] = model
+        return { teks: penuh }
+      }
+      continue // aliran kosong: coba model berikutnya
+    } catch (err) {
+      if (penuh) return { teks: penuh, terpotong: true }
+      if (err?.name === 'AbortError') {
+        macet = true
+        continue
+      }
+      return { galat: 'jaringan_gagal', status: 502 }
+    } finally {
+      clearTimeout(timer)
+    }
+  }
+  if (macet) return { galat: 'waktu_habis', status: 504 }
+  if (terakhir) return { galat: 'penyedia_gagal', status: 502, kodeAsal: terakhir }
+  return { galat: 'model_tidak_ada', status: 502 }
+}
+
 // Pemeriksaan untuk peneliti (api/status.js). Tidak pernah menampilkan kunci utuh.
 export async function diagnosa() {
   const p = penyedia()

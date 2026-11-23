@@ -54,6 +54,7 @@ export default function ObrolanAI({ modul }) {
   const [memuat, setMemuat] = useState(false)
   const [galat, setGalat] = useState('')
   const [info, setInfo] = useState('')
+  const [sedang, setSedang] = useState('') // teks yang sedang ditulis AI
   const ujung = useRef(null)
 
   useEffect(() => {
@@ -63,7 +64,7 @@ export default function ObrolanAI({ modul }) {
       // abaikan
     }
     ujung.current?.scrollIntoView?.({ block: 'end' })
-  }, [pesan, memuat, galat, kunci])
+  }, [pesan, memuat, galat, kunci, sedang])
 
   async function minta(daftar) {
     setMemuat(true)
@@ -74,7 +75,7 @@ export default function ObrolanAI({ modul }) {
       const r = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pesan: daftar.slice(-8), modul, konteks: k }),
+        body: JSON.stringify({ pesan: daftar.slice(-8), modul, konteks: k, alir: true }),
       })
       if (!r.ok) {
         setGalat(PESAN_GALAT[r.status] || 'Belum bisa menjawab. Periksa internetmu, lalu coba lagi.')
@@ -87,12 +88,27 @@ export default function ObrolanAI({ modul }) {
         )
         return
       }
+      if ((r.headers.get('content-type') || '').includes('text/plain') && r.body) {
+        const baca = r.body.getReader()
+        const dekode = new TextDecoder()
+        let penuh = ''
+        for (;;) {
+          const { done, value } = await baca.read()
+          if (done) break
+          penuh += dekode.decode(value, { stream: true })
+          setSedang(penuh.replace(/\n{3,}/g, '\n\n').slice(0, 2500))
+        }
+        const akhir = penuh.replace(/\n{3,}/g, '\n\n').trim().slice(0, 2500)
+        if (akhir) setPesan((p) => [...p, { dari: 'ai', teks: akhir }])
+        return
+      }
       const { teks } = await r.json()
       setPesan((p) => [...p, { dari: 'ai', teks }])
     } catch {
       setGalat('Belum bisa menjawab. Periksa internetmu, lalu coba lagi.')
       setInfo('Tidak sampai ke server. Periksa internet, atau pastikan npm run dev masih berjalan.')
     } finally {
+      setSedang('')
       setMemuat(false)
     }
   }
@@ -142,7 +158,13 @@ export default function ObrolanAI({ modul }) {
           ),
         )}
 
-        {memuat && (
+        {memuat && sedang && (
+          <div className="mr-8 rounded-2xl rounded-bl-sm bg-kartu px-4 py-2 text-lg text-teks ring-1 ring-garis">
+            <p className="text-sm font-bold text-basis">Kak AI</p>
+            <Teks teks={sedang} />
+          </div>
+        )}
+        {memuat && !sedang && (
           <p className="mr-8 rounded-2xl bg-kartu px-4 py-2 text-teks-pelan ring-1 ring-garis">
             Kak AI sedang menulis…
           </p>
