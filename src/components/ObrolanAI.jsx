@@ -18,6 +18,7 @@ const INFO_GALAT = {
   penyedia_gagal: 'Penyedia AI sedang bermasalah. Coba lagi sebentar.',
   waktu_habis: 'Penyedia AI terlalu lama menjawab. Coba lagi.',
   kuota_habis: 'Batas pemakaian gratis penyedia AI tercapai. Tunggu beberapa saat.',
+  galat_server: 'Fungsi server gagal berjalan.',
   asal_ditolak: 'Permintaan ditolak karena berasal dari alamat lain.',
 }
 
@@ -81,7 +82,7 @@ export default function ObrolanAI({ modul }) {
         setGalat(PESAN_GALAT[r.status] || 'Belum bisa menjawab. Periksa internetmu, lalu coba lagi.')
         const badan = await r.json().catch(() => null)
         setInfo(
-          (INFO_GALAT[badan?.error] ? INFO_GALAT[badan.error] + (badan?.kode ? ` (kode dari Google: ${badan.kode})` : '') : '') ||
+          (INFO_GALAT[badan?.error] ? INFO_GALAT[badan.error] + (badan?.kode ? ` (kode dari Google: ${badan.kode})` : '') + (badan?.rincian ? ` Rincian: ${badan.rincian}` : '') : '') ||
             (r.status === 404
               ? 'Fungsi /api/chat tidak ditemukan. Di Vercel, pastikan folder api ikut terunggah ke GitHub.'
               : `Kode respons ${r.status}. Buka /api/status untuk melihat penyebabnya.`),

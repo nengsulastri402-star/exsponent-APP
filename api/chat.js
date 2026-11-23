@@ -45,7 +45,7 @@ const bersihkan = (t) =>
 const samarkan = (t) =>
   t.replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, '[email]').replace(/\d[\d\s-]{7,}\d/g, '[nomor]')
 
-export default async function handler(req, res) {
+async function tangani(req, res) {
   if (req.method !== 'POST') return kirim(res, 405, { error: 'metode_tidak_diizinkan' })
   if (asalDitolak(req)) return kirim(res, 403, { error: 'asal_ditolak' })
   if (!adaKunci()) return kirim(res, 503, { error: 'belum_diatur' })
@@ -110,4 +110,18 @@ export default async function handler(req, res) {
   const teks = bersihkan(hasil.teks)
   if (!teks) return kirim(res, 502, { error: 'balasan_kosong' })
   return kirim(res, 200, { teks })
+}
+
+// Pembungkus: galat tak terduga dikirim sebagai JSON (bukan 500 kosong) agar penyebabnya terlihat.
+export default async function handler(req, res) {
+  try {
+    return await tangani(req, res)
+  } catch (err) {
+    console.error('chat gagal:', err)
+    if (res.headersSent) return res.end()
+    return kirim(res, 500, {
+      error: 'galat_server',
+      rincian: String(err?.message || err).replace(/\s+/g, ' ').slice(0, 200),
+    })
+  }
 }
