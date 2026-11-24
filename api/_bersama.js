@@ -64,7 +64,7 @@ function penyedia() {
     nama: 'gemini',
     kunci: bersihKunci(e.GEMINI_API_KEY),
     alamat: e.GEMINI_URL || 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
-    model: [e.GEMINI_MODEL, 'gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest', 'gemini-flash-lite-latest'],
+    model: [e.GEMINI_MODEL, 'gemini-3.5-flash', 'gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'],
     // Model Gemini "berpikir" dulu. 'low' menjaga cepat; bila model menolak, parameter ini dibuang otomatis.
     tambahan: { reasoning_effort: e.GEMINI_BERPIKIR || 'low' },
     kaliToken: 3,
