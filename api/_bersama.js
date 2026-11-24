@@ -64,10 +64,10 @@ function penyedia() {
     nama: 'gemini',
     kunci: bersihKunci(e.GEMINI_API_KEY),
     alamat: e.GEMINI_URL || 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
-    model: [e.GEMINI_MODEL, 'gemini-2.5-flash', 'gemini-flash-latest', 'gemini-2.5-flash-lite', 'gemini-flash-lite-latest'],
-    // Model Gemini "berpikir" dulu. 'none' mematikannya agar jawaban cepat (ubah lewat GEMINI_BERPIKIR=low bila perlu).
-    tambahan: { reasoning_effort: e.GEMINI_BERPIKIR || 'none' },
-    kaliToken: 2,
+    model: [e.GEMINI_MODEL, 'gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest', 'gemini-flash-lite-latest'],
+    // Model Gemini "berpikir" dulu. 'low' menjaga cepat; bila model menolak, parameter ini dibuang otomatis.
+    tambahan: { reasoning_effort: e.GEMINI_BERPIKIR || 'low' },
+    kaliToken: 3,
   }
 }
 
@@ -109,7 +109,7 @@ export async function tanyaAI({ messages, maxTokens, temperature = 0.3, waktuMs 
       if (r.status === 400 || r.status === 404 || r.status === 422) {
         const isi = await r.text().catch(() => '')
         if (/api[_ ]key/i.test(isi)) return { galat: 'kunci_tidak_valid', status: 503 }
-        if (/reasoning|thinking/i.test(isi) && !tanpaBerpikir.has(model)) {
+        if (r.status === 400 && !tanpaBerpikir.has(model)) {
           tanpaBerpikir.add(model) // model ini menolak parameter berpikir: ulangi tanpa itu
           daftar.splice(daftar.indexOf(model) + 1, 0, model)
         }
@@ -176,7 +176,7 @@ export async function tanyaAIAlir({ messages, maxTokens, temperature = 0.3, wakt
       if (r.status === 400 || r.status === 404 || r.status === 422) {
         const isi = await r.text().catch(() => '')
         if (/api[_ ]key/i.test(isi)) return { galat: 'kunci_tidak_valid', status: 503 }
-        if (/reasoning|thinking/i.test(isi) && !tanpaBerpikir.has(model)) {
+        if (r.status === 400 && !tanpaBerpikir.has(model)) {
           tanpaBerpikir.add(model)
           daftar.splice(daftar.indexOf(model) + 1, 0, model)
         }
@@ -279,6 +279,18 @@ export async function diagnosa() {
         return { ...hasil, kesimpulan: `Berhasil dengan model ${model}. Isi GEMINI_MODEL=${model} bila ingin memaksa model ini.` }
       }
       catat.pesan = aman(isi)
+      if (r.status === 400) {
+        const ulang = await fetch(p.alamat, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${p.kunci}` },
+          body: JSON.stringify({ model, max_tokens: 200, messages: [{ role: 'user', content: 'Balas satu kata: ok' }] }),
+        }).catch(() => null)
+        if (ulang?.ok) {
+          catat.hasil = 'BERHASIL tanpa parameter berpikir'
+          hasil.percobaan.push(catat)
+          return { ...hasil, kesimpulan: `Berhasil dengan model ${model} (tanpa parameter berpikir).` }
+        }
+      }
     } catch (err) {
       catat.status = 0
       catat.pesan = err?.name === 'AbortError' ? 'waktu habis' : `server tidak bisa menghubungi penyedia: ${aman(err?.cause?.message || err?.message)}`
